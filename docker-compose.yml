@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+
+  report-generator:
+    image: report-generator
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      USERACTIVITY_HOST: user-activity-service:8000
+    networks:
+      - internal-network
+
+  user-activity-service:
+    image: antipintk/user-activity-service
+    restart: always
+    ports:
+      - 8000:8000
+    environment:
+      USER_ACTIVITY_ERROR_PROBABILITY: 0.5
+      USER_ACTIVITY_MIN_DELAY: 5000
+      USER_ACTIVITY_MAX_DELAY: 12000
+    networks:
+      - internal-network
+
+networks:
+  internal-network:
